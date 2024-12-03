@@ -35,7 +35,7 @@ const calculate = (input: { left: Array<number>, right: Array<number> }): number
 }
 
 const gather = async () => {
-  const file = await fs.readFile('./input.txt', 'utf8');
+  const file = await fs.readFile('../input.txt', 'utf8');
   const lines = file.split('\n');
   const inputs = lines.map(line => line.split(/\s+/).map(item => Number(item))); 
   inputs.pop();
