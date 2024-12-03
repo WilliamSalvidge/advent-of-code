@@ -16,6 +16,8 @@ fn main() {
     // line will be dereferenced string slice
     for line in lines {
         let words: Vec<&str> = line.split_whitespace().collect();
+        // I think we need to create a copy otherwise are just pushing another reference
+        // but maybe we can just organise the references into order?
         left.push(words[0].to_string());
         right.push(words[1].to_string());
     }
@@ -23,15 +25,27 @@ fn main() {
     left.sort();
     right.sort();
 
-    let mut count = 0; 
+    let mut count_a = 0;
     for n in 0..left.len() {
         if left[n] > right[n] {
             // left[n] will be a string slice so need to turn it into a number
-            count = count + (left[n].parse::<i32>().unwrap() - right[n].parse::<i32>().unwrap()) 
+            count_a = count_a + (left[n].parse::<i32>().unwrap() - right[n].parse::<i32>().unwrap());
         } else {
-            count = count + (right[n].parse::<i32>().unwrap() - left[n].parse::<i32>().unwrap()) 
+            count_a = count_a + (right[n].parse::<i32>().unwrap() - left[n].parse::<i32>().unwrap());
         } 
     }
 
-    println!("{}", count);
+    let mut count_b = 0;
+    for n in 0..left.len() {
+        let mut tmp = 0;
+        for j in 0..right.len() {
+            if left[n] == right[j] {
+               tmp = tmp + 1;
+            }
+        }
+        count_b = count_b + left[n].parse::<i32>().unwrap() * tmp;
+    }
+
+    println!("part A: {}", count_a);
+    println!("part B: {}", count_b)
 }
