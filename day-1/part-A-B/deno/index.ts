@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 
-const divideArrays = (original: Array<number>): { left: Array<number>, right: Array<number> } => {
-  const divided = { left: [], right: [] };
+const divideArrays = (original: Array<Array<number>>): { left: Array<number>, right: Array<number> } => {
+  const divided: { left: number[], right: number[] } = { left: [], right: [] };
   for (let i = 0; i < original.length; i++) {
     divided.left.push(original[i][0]);
     divided.right.push(original[i][1]);
@@ -10,13 +10,13 @@ const divideArrays = (original: Array<number>): { left: Array<number>, right: Ar
 };
 
 const sortArrays = (input: { left: Array<number>, right: Array<number>}): { left: Array<number>, right: Array<number> } => {
-  const callback = (a, b) => a - b;
+  const callback = (a: number, b: number) => a - b;
   const west = input.left.sort(callback);
   const east = input.right.sort(callback);
   return { left: west, right: east };
 }
 
-const workArrays = (original: Array<number>): { left: Array<number>, right: Array<number> } => {
+const workArrays = (original: number[][]): { left: Array<number>, right: Array<number> } => {
   const divided = divideArrays(original);
   const sorted = sortArrays(divided);
   return sorted;
@@ -35,7 +35,7 @@ const calculate = (input: { left: Array<number>, right: Array<number> }): number
 }
 
 const gather = async () => {
-  const file = await fs.readFile('../input.txt', 'utf8');
+  const file: string = await fs.readFile('../input.txt', 'utf8');
   const lines = file.split('\n');
   const inputs = lines.map(line => line.split(/\s+/).map(item => Number(item))); 
   inputs.pop();
