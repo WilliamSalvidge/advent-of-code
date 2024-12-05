@@ -10,16 +10,15 @@ fn main() {
     // A string slice is a references to portion of a String 
     let lines: Vec<&str> = contents.split("\n").filter(|line| !line.is_empty()).collect();
 
-    let mut left: Vec<String> = Vec::new();
-    let mut right: Vec<String> = Vec::new();
+    let mut left: Vec<&str> = Vec::new();
+    let mut right: Vec<&str> = Vec::new();
 
     // line will be dereferenced string slice
     for line in lines {
         let words: Vec<&str> = line.split_whitespace().collect();
-        // I think we need to create a copy otherwise are just pushing another reference
-        // but maybe we can just organise the references into order?
-        left.push(words[0].to_string());
-        right.push(words[1].to_string());
+        // we can just organise the references into order I believe
+        left.push(words[0]);
+        right.push(words[1]);
     }
 
     left.sort();
@@ -31,9 +30,20 @@ fn main() {
             // left[n] will be a string slice so need to turn it into a number
             count_a = count_a + (left[n].parse::<i32>().unwrap() - right[n].parse::<i32>().unwrap());
         } else {
+            // parse returns a result type. If we call unwrap and the result is an error the
+            // program will panic
             count_a = count_a + (right[n].parse::<i32>().unwrap() - left[n].parse::<i32>().unwrap());
         } 
     }
+
+    // why single & for west and && for east?
+    let array_syntax: usize = left
+        .iter()
+        .map(|&west| right
+            .iter()
+            .filter(|&&east| east == west)
+            .count() * west.parse::<usize>().unwrap()
+        ).sum();
 
     let mut count_b = 0;
     for n in 0..left.len() {
@@ -47,5 +57,6 @@ fn main() {
     }
 
     println!("part A: {}", count_a);
-    println!("part B: {}", count_b)
+    println!("part B: {}", count_b);
+    println!("part B again: {}", array_syntax);
 }
