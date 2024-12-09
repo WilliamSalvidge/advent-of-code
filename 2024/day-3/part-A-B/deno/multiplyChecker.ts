@@ -6,7 +6,6 @@ const isNum = (input: string): boolean => {
 
 export const multiplyChecker = (line: string, index: number, innerIndex: number, left: number | null, right: number | null, leftLen: number | null, rightLen: number | null): number => {
   if (innerIndex === 0 && line.slice(index + 0, index + 4) === "mul(") {
-    // console.log('yep');
     return multiplyChecker(line, index, 4, null, null, null, null)
   }
   if (innerIndex === 4) {
@@ -22,7 +21,6 @@ export const multiplyChecker = (line: string, index: number, innerIndex: number,
     return 0;
   }
   if (innerIndex === 5) {
-    // console.log('5: ',line[index + innerIndex], line[index + innerIndex + 1], line[index + innerIndex + 2], line[index + innerIndex + 3])
     if (line[index + innerIndex] !== ',') return 0;
     if (isNum(line[index + innerIndex + 1]) && isNum(line[index + innerIndex + 2]) && isNum(line[index + innerIndex + 3])) {
      return multiplyChecker(line, index, 9, left, Number(line[index + innerIndex + 1] + line[index + innerIndex + 2] + line[index + innerIndex + 3]), leftLen, 3) 
@@ -37,12 +35,7 @@ export const multiplyChecker = (line: string, index: number, innerIndex: number,
   }
 
   if (innerIndex === 6) {
-    // console.log('6: ',line[index + innerIndex], line[index + innerIndex + 1], line[index + innerIndex + 2], line[index + innerIndex + 3])
-    // console.log('6: left: ', left, leftLen, 'right: ', right, rightLen)
-    if (line[index + innerIndex] !== ',') {
-      // console.log('hiya')
-      return 0
-    };
+    if (line[index + innerIndex] !== ',') return 0
     if (isNum(line[index + innerIndex + 1]) && isNum(line[index + innerIndex + 2]) && isNum(line[index + innerIndex + 3])) {
       return multiplyChecker(line, index, 10, left, Number(line[index + innerIndex + 1] + line[index + innerIndex + 2] + line[index + innerIndex + 3]), leftLen, 3) 
     }
@@ -56,8 +49,6 @@ export const multiplyChecker = (line: string, index: number, innerIndex: number,
   }
 
   if (innerIndex === 7) {
-    // console.log('7: ',line[index + innerIndex], line[index + innerIndex + 1], line[index + innerIndex + 2], line[index + innerIndex + 3])
-    // console.log('7: left: ', left, leftLen, 'right: ', right, rightLen)
     if (leftLen === 1 && rightLen === 1 && left && right) {
       if (line[index + innerIndex] === ')') return left * right;
       return 0;
@@ -76,12 +67,9 @@ export const multiplyChecker = (line: string, index: number, innerIndex: number,
   }
 
   if (innerIndex >= 8) {
-      // console.log('8: ',line[index + innerIndex], line[index + innerIndex + 1], line[index + innerIndex + 2], line[index + innerIndex + 3])
-      // console.log('8: left: ', left, leftLen, 'right: ', right, rightLen)
       if (line[index + innerIndex] === ')' && left && right) return left * right;
   }
 
-  // console.log('uh-oh')
   return 0;
 }
 

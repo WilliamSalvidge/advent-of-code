@@ -12,11 +12,7 @@ const mainA = async (input: string): Promise<number> => {
   let tally = 0;
   for (let i = 0; i < out.length; i++) {
     if (out[i] === 'm') {
-        // console.log('------')
-        // console.log(out.slice(i, i + 12))
         const output = multiplyChecker(out, i, 0, null, null, null, null);
-        // console.log('res:', output);
-        // console.log('current tally:', tally + output);
         tally = tally + output;
       }
     }
@@ -31,11 +27,7 @@ const mainB = async (input: string): Promise<number> => {
   let enabled = true;
   for (let i = 0; i < out.length; i++) {
     if (out[i] === 'm' && enabled) {
-        // console.log('------')
-        // console.log(out.slice(i, i + 12))
         const output = multiplyChecker(out, i, 0, null, null, null, null);
-        // console.log('res:', output);
-        // console.log('current tally:', tally + output);
         tally = tally + output;
       }
       
