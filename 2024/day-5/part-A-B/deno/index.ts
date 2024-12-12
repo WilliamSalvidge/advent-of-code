@@ -10,30 +10,35 @@ const prepare = async () => {
 
 const work = (rules: number[][], updates: number[][]) => {
   const success: number[][] = []
-  const failure
+  const correctedFailures: number[][] = [];
   updates.forEach((update) => {
     const updateLength = update.length - 1;
-    let res: boolean | null = null;
+    const correctedFailure = [...update];
+    let taint: boolean = false;
     for (let i = 0; i <= updateLength; i++) {
-      if (i === updateLength) {
-        res = true;
-        continue;
-      }
-      const current = update[i]
-      const next = update[i + 1];
+      if (i === updateLength) continue;
+      const current = correctedFailure[i]
+      const next = correctedFailure[i + 1];
       const res_a = rules.find((each) => each[0] === current && each[1] === next);
       const res_b = rules.find((each) => each[0] === next && each[1] === current);
-      if (res_a) continue;
+      if (res_a) {
+        continue;
+      }
       if (res_b) {
-        res = false;
-        break;
+        correctedFailure[i] = next;
+        correctedFailure[i + 1] = current;
+        taint = true;
+        i = -1;
+        continue;
       }
     }
-    if (res) {
+    if (!taint) {
       success.push(update);
+    } else {
+      correctedFailures.push(correctedFailure);
     }
   })
-  return success;
+  return [success, correctedFailures];
 }
 
 const middle = (input: number[][]) => {
@@ -45,9 +50,10 @@ const middle = (input: number[][]) => {
 
 const main = async () => {
   const [rules, updates] = await prepare();
-  const out = work(rules, updates);
-  const mid = middle(out);
-  return mid;
+  const [outSuccess, outFailure] = work(rules, updates);
+  const mid = middle(outSuccess);
+  const midFail = middle(outFailure);
+  return [ mid, midFail ];
 }
 
 console.log(await main());
