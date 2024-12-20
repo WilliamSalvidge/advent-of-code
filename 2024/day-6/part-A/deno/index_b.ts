@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 
 const prepare = async () => {
-  const file: string = await fs.readFile("../input.txt", "utf8");
+  const file: string = await fs.readFile("../mock-two.txt", "utf8");
   const field = file.split("\n").slice(0, -1).map((input) => input.split(""));
   const start =
     field.map((row, index) => [index, row.findIndex((item) => item === "^")])
@@ -40,7 +40,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[0] - 1; i >= 0; i--) {
+        for (let i = start[0] - 1; i > 0; i--) {
           const output = walkB(
             "E",
             [i, start[1]],
@@ -153,7 +153,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[0] + 1; i <= height - 1; i++) {
+        for (let i = start[0] + 1; i < (height - 1); i++) {
           const output = walkB(
             "W",
             [i, start[1]],
@@ -181,6 +181,10 @@ const walkB = (
     );
     if (side === 1) {
       for (let i = start[0] + 1; i < newStart[0]; i++) {
+        console.log(
+          Array(side - 1).fill("  ").join("") +
+            `artificial block at ${[i + 1, start[1]]}`,
+        );
         const output = walkB(
           "W",
           [i, start[1]],
@@ -262,7 +266,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[1] + 1; i <= width - 1; i++) {
+        for (let i = start[1] + 1; i < (width - 1); i++) {
           const output = walkB(
             "S",
             [start[0], i],
@@ -290,6 +294,10 @@ const walkB = (
     );
     if (side === 1) {
       for (let i = start[1] + 1; i < newStart[1]; i++) {
+        console.log(
+          Array(side - 1).fill("  ").join("") +
+            `artificial block at ${[start[0], i + 1]}`,
+        );
         const output = walkB(
           "S",
           [start[0], i],
@@ -371,7 +379,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[1] - 1; i >= 0; i--) {
+        for (let i = start[1] - 1; i > 0; i--) {
           const output = walkB(
             "N",
             [start[0], i],
@@ -400,6 +408,10 @@ const walkB = (
     if (side === 1) {
       console.log(start, newStart);
       for (let i = start[1] - 1; i > newStart[1]; i--) {
+        console.log(
+          Array(side - 1).fill("  ").join("") +
+            `artificial block at ${[start[0], i - 1 ]}`,
+        );
         const output = walkB(
           "N",
           [start[0], i],
