@@ -7,9 +7,9 @@ const prepare = async () => {
 
   const obstacles = field.map((row, rowIndex) => {
     return row.map((column, colIndex) => {
-      console.log(column)
+//      console.log(column)
       if (column === '#') {
-        console.log('yep')
+//        console.log('yep')
         return [rowIndex, colIndex]
       }
       return [-1,-1]
@@ -50,7 +50,9 @@ const walk = (direction: string, start: number[], obstacles: number[][], height:
       return newMarked
     };
     const sortBlock = blocks.sort((a, b) => a[1] - b[1]); // smallest obstacle
+
     const newStart = [ sortBlock[0][0], sortBlock[0][1] - 1];
+    console.log(start, newStart);
     for (let i = start[1]; i < newStart[1]; i++) {
       newMarked.push([start[0], i])
     }
@@ -68,6 +70,7 @@ const walk = (direction: string, start: number[], obstacles: number[][], height:
     };
     const sortBlock = blocks.sort((a, b) => a[0] - b[0]); // smallest obstacle
     const newStart = [ sortBlock[0][0] - 1, sortBlock[0][1] ];
+    console.log(start, newStart);
     for (let i = start[0]; i < newStart[0]; i++) {
       newMarked.push([i, start[1]])
     }
@@ -85,6 +88,7 @@ const walk = (direction: string, start: number[], obstacles: number[][], height:
     };
     const sortBlock = blocks.sort((a, b) => b[1] - a[1]); // biggest obstacle
     const newStart = [ sortBlock[0][0], sortBlock[0][1] + 1];
+    console.log(start, newStart);
     for (let i = start[1]; i > newStart[1]; i--) {
       newMarked.push([start[0], i])
     }

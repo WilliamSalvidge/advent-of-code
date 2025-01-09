@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 
 const prepare = async () => {
-  const file: string = await fs.readFile("../mock-two.txt", "utf8");
+  const file: string = await fs.readFile("../../input.txt", "utf8");
   const field = file.split("\n").slice(0, -1).map((input) => input.split(""));
   const start =
     field.map((row, index) => [index, row.findIndex((item) => item === "^")])
@@ -40,7 +40,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[0] - 1; i > 0; i--) {
+        for (let i = start[0]; i > 0; i--) {
           const output = walkB(
             "E",
             [i, start[1]],
@@ -61,13 +61,13 @@ const walkB = (
     }
     const sortBlock = blocks.sort((a, b) => b[0] - a[0])[0]; // biggest obstacle
     const newStart = [sortBlock[0] + 1, sortBlock[1]];
-    if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
+    // if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
     console.log(
       Array(side - 1).fill("  ").join("") +
         `starting position ${start} next starting position ${newStart}, block is at ${sortBlock}`,
     );
     if (side === 1) {
-      for (let i = start[0] - 1; i > newStart[0]; i--) {
+      for (let i = start[0]; i > newStart[0]; i--) {
         console.log(
           Array(side - 1).fill("  ").join("") +
             `artificial block at ${[i - 1, start[1]]}`,
@@ -97,9 +97,9 @@ const walkB = (
           `current pos ${start} origin pos ${internalStart} new start pos ${newStart}`,
       );
       if (
-        internalStart.find((unit) =>
+        internalStart.filter((unit) =>
           unit[0] === start[0] && unit[1] === start[1]
-        )
+        ).length > 2
       ) {
         console.log(
           Array(side - 1).fill("  ").join("") +
@@ -153,7 +153,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[0] + 1; i < (height - 1); i++) {
+        for (let i = start[0]; i < (height - 1); i++) {
           const output = walkB(
             "W",
             [i, start[1]],
@@ -174,13 +174,13 @@ const walkB = (
     }
     const sortBlock = blocks.sort((a, b) => a[0] - b[0])[0]; // biggest obstacle
     const newStart = [sortBlock[0] - 1, sortBlock[1]];
-    if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
+    // if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
     console.log(
       Array(side - 1).fill("  ").join("") +
         `starting position ${start} next starting position ${newStart}, block is at ${sortBlock}`,
     );
     if (side === 1) {
-      for (let i = start[0] + 1; i < newStart[0]; i++) {
+      for (let i = start[0]; i < newStart[0]; i++) {
         console.log(
           Array(side - 1).fill("  ").join("") +
             `artificial block at ${[i + 1, start[1]]}`,
@@ -210,9 +210,9 @@ const walkB = (
           `current pos ${start} origin pos ${internalStart} new start pos ${newStart}`,
       );
       if (
-        internalStart.find((unit) =>
+        internalStart.filter((unit) =>
           unit[0] === start[0] && unit[1] === start[1]
-        )
+        ).length > 2
       ) {
         console.log(
           Array(side - 1).fill("  ").join("") +
@@ -266,7 +266,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[1] + 1; i < (width - 1); i++) {
+        for (let i = start[1]; i < (width - 1); i++) {
           const output = walkB(
             "S",
             [start[0], i],
@@ -287,13 +287,13 @@ const walkB = (
     }
     const sortBlock = blocks.sort((a, b) => a[1] - b[1])[0]; // biggest obstacle
     const newStart = [sortBlock[0], sortBlock[1] - 1];
-    if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
+    // if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
     console.log(
       Array(side - 1).fill("  ").join("") +
         `starting position ${start} next starting position ${newStart}, block is at ${sortBlock}`,
     );
     if (side === 1) {
-      for (let i = start[1] + 1; i < newStart[1]; i++) {
+      for (let i = start[1]; i < newStart[1]; i++) {
         console.log(
           Array(side - 1).fill("  ").join("") +
             `artificial block at ${[start[0], i + 1]}`,
@@ -323,9 +323,9 @@ const walkB = (
           `current pos ${start} origin pos ${internalStart} new start pos ${newStart}`,
       );
       if (
-        internalStart.find((unit) =>
+        internalStart.filter((unit) =>
           unit[0] === start[0] && unit[1] === start[1]
-        )
+        ).length > 2
       ) {
         console.log(
           Array(side - 1).fill("  ").join("") +
@@ -379,7 +379,7 @@ const walkB = (
       console.log(Array(side - 1).fill("  ").join("") + "no blocks");
       if (side === 1) {
         console.log(Array(side - 1).fill("  ").join("") + "side 1");
-        for (let i = start[1] - 1; i > 0; i--) {
+        for (let i = start[1]; i > 0; i--) {
           const output = walkB(
             "N",
             [start[0], i],
@@ -400,14 +400,14 @@ const walkB = (
     }
     const sortBlock = blocks.sort((a, b) => b[1] - a[1])[0]; // biggest obstacle
     const newStart = [sortBlock[0], sortBlock[1] + 1];
-    if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
+    // if (newStart[0] === start[0] && newStart[1] === start[1]) return 0;
     console.log(
       Array(side - 1).fill("  ").join("") +
         `starting position ${start} next starting position ${newStart}, block is at ${sortBlock}`,
     );
     if (side === 1) {
       console.log(start, newStart);
-      for (let i = start[1] - 1; i > newStart[1]; i--) {
+      for (let i = start[1]; i > newStart[1]; i--) {
         console.log(
           Array(side - 1).fill("  ").join("") +
             `artificial block at ${[start[0], i - 1 ]}`,
@@ -437,9 +437,9 @@ const walkB = (
           `current pos ${start} origin pos ${internalStart} new start pos ${newStart}`,
       );
       if (
-        internalStart.find((unit) =>
+        internalStart.filter((unit) =>
           unit[0] === start[0] && unit[1] === start[1]
-        )
+        ).length > 2
       ) {
         console.log(
           Array(side - 1).fill("  ").join("") +
@@ -489,7 +489,7 @@ const main = async () => {
   const { field, start, obstacles } = await prepare();
   const out = walkB(
     "N",
-    [start[0] + 1, start[1]],
+    [start[0], start[1]],
     obstacles,
     0,
     1,
