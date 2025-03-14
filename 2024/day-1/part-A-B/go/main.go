@@ -8,16 +8,45 @@ import (
 )
 
 func main() {
-   // fmt.Print("Hello World\n");
 
+  data := read()
+
+  left, right := prepare(data)
+
+  sort(left)
+  sort(right)
+
+  output := res(left, right)
+
+  fmt.Printf("result = %d\n", output)
+  
+  return
+}
+
+func res(sorted_left []int, sorted_right []int) int {
+  result := 0
+  for j := 0; j < len(sorted_left); j++ {
+    if (sorted_left[j] > sorted_right[j]) {
+      result = result + (sorted_left[j] - sorted_right[j]) 
+    } else {
+      result = result + (sorted_right[j] - sorted_left[j])
+    } 
+  }
+  return result
+}
+
+func read() string {
   data, err := os.ReadFile("../input.txt")
 
   if err != nil {
     panic(err)
   }
 
-  all := string(data)
-  lines := strings.Split(all, "\n")
+  return string(data)
+}
+
+func prepare(filestring string) ([]int, []int) {
+  lines := strings.Split(filestring, "\n")
   left := make([]int, 0, len(lines))
   right := make([]int, 0, len(lines))
   for i := 0; i < len(lines) - 1; i++ {
@@ -34,33 +63,7 @@ func main() {
     right = append(right, tmpright)
   }
 
-  for j := 0; j < len(lines) - 1; j++ {
-    // fmt.Printf("%d left: %d, right: %d\n", j, left[j], right[j])
-  }
-
-  sort(left)
-  sort(right)
-
-  for j := 0; j < len(lines) - 1; j++ {
-    // fmt.Printf("%d left: %d\n", j, left[j])
-  }
-
-  for j := 0; j < len(lines) - 1; j++ {
-    // fmt.Printf("%d right: %d\n", j, right[j])
-  }
-
-  res := 0
-  for j := 0; j < len(lines) - 1; j++ {
-    if (left[j] > right[j]) {
-      res = res + (left[j] - right[j]) 
-    } else {
-      res = res + (right[j] - left[j])
-    } 
-  }
-
-  fmt.Printf("result = %d\n", res)
-  return
-
+  return left, right
 }
 
 func merge(left []int, right []int) {
