@@ -3,7 +3,7 @@ use std::fs;
 fn main() {
 
     // Non mutable String - Heap
-    let contents = fs::read_to_string("../input.txt")
+    let contents = fs::read_to_string("../../input.txt")
         .expect("inputs txt should exist");
 
     // Non mutable Vector of string slices
