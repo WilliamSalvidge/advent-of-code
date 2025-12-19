@@ -1,47 +1,10 @@
 use std::fs;
 
-fn left (input: i32, mut internal_position: i32, mut internal_passcode: i32) -> (i32, i32) {
-    let mods = input % 100;
-    let result = internal_position - mods;
-    if result == 0 {
-        internal_position = 0;
-        internal_passcode = internal_passcode + 1;
-    }
-    if result > 0 {
-        internal_position = result;
-    }
-    if result < 0 {
-        internal_position = 100 + result;
-    }
-    (internal_position, internal_passcode)
-}
-
-fn right (input: i32, mut internal_position: i32, mut internal_passcode: i32) -> (i32, i32) {
-    let mods = input % 100;
-    let result = internal_position + mods;
-    if result == 100 {
-        internal_position = 0;
-        internal_passcode = internal_passcode + 1;
-    }
-    if result < 100 {
-        internal_position = result;
-    }
-    if result > 100 {
-        internal_position = mods - (100 - internal_position);
-    }
-    (internal_position, internal_passcode)
-}
-
-
-fn check (dir: &str, value: i32, position: i32, passcode: i32) -> (i32, i32) {
-    if dir == "L" {
-        return left(value, position, passcode);
-    }
-    right(value, position, passcode)
-}
+mod helper_a;
+mod helper_b;
+mod common;
 
 fn main() {
-
     // Create a non mutable string on the heap
     // We get back a Result object
     // us unwrap to get out the positive outcome
@@ -70,13 +33,31 @@ fn main() {
     let mut passcode = 0;
     let mut position = 50;
 
+    let mut passcode_b = 0;
+    let mut position_b = 50;
+
+    let mut passcode_a = 0;
+    let mut position_a = 50;
+
+    let check_a = helper_a::check_a();
+
     for (a, b) in lines {
         // println!("passcode: {}, position: {}", passcode, position);
-        let (new_pos, new_pass) = check(a, b, position, passcode);
+        let (new_pos, new_pass) = helper_a::check(a, b, position, passcode);
         position = new_pos;
         passcode = new_pass;
         // println!("hey {a} {b}");
+        let (new_pos_b, new_pass_b) = helper_b::check(a, b, position_b, passcode_b);
+        position_b = new_pos_b;
+        passcode_b = new_pass_b;
+
+        let (new_pos_a, new_pass_a) = check_a(a, b, position_a, passcode_a);
+
+        position_a = new_pos_a;
+        passcode_a = new_pass_a;
     }
 
-    println!("final result passcode! = {}", passcode);
+    println!("final result A passcode! = {}", passcode);
+    println!("final result B passcode! = {}", passcode_b);
+    println!("final result A passcode! = {}", passcode_a);
 }
