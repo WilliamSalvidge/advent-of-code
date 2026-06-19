@@ -3,13 +3,14 @@ import { createChecker } from "./helper.mts";
 export let positionB = 50;
 export let passcodeB = 0;
 
+// 220
 const leftCheckB = (value: number) => {
-  const mod = value % 100;
-  const result = positionB - mod;
-  const floor = Math.floor(value / 100);
+  const mod = value % 100; // 80
+  const result = positionB - mod; // 50 - 20 = 30
+  const floor = Math.floor(value / 100); // 280 / 100 = 2.8 = 2 
   if (result === 0) {
-    positionB = 0;
-    passcodeB = passcodeB + 1 + floor;
+    positionB = result;
+    passcodeB = passcodeB + 1 + floor; // 0 + 0 + 2
     return;
   }
   if (result > 0) {

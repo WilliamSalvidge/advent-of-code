@@ -8,17 +8,24 @@ fn main() {
 
     // Non mutable Vector of string slices
     // A string slice is a references to portion of a String 
-    let lines: Vec<&str> = contents.split("\n").filter(|line| !line.is_empty()).collect();
+    let lines: Vec<&str> = contents
+        .split("\n")
+        .filter(|line| !line.is_empty())
+        .collect();
 
-    let mut left: Vec<&str> = Vec::new();
-    let mut right: Vec<&str> = Vec::new();
+    let mut left: Vec<i32> = Vec::new();
+    let mut right: Vec<i32> = Vec::new();
 
-    // line will be dereferenced string slice
     for line in lines {
-        let words: Vec<&str> = line.split_whitespace().collect();
-        // we can just organise the references into order I believe
-        left.push(words[0]);
-        right.push(words[1]);
+        let str_nums_iter = line.split(" ").enumerate();
+        for (i, str_num) in str_nums_iter {
+            let c = str_num.parse::<i32>().unwrap();
+                if i == 0 {
+                left.push(c);
+            } else {
+                right.push(c);
+            }
+        }
     }
 
     left.sort();
@@ -27,36 +34,29 @@ fn main() {
     let mut count_a = 0;
     for n in 0..left.len() {
         if left[n] > right[n] {
-            // left[n] will be a string slice so need to turn it into a number
-            count_a = count_a + (left[n].parse::<i32>().unwrap() - right[n].parse::<i32>().unwrap());
+            count_a = count_a + (left[n] - right[n]);
         } else {
-            // parse returns a result type. If we call unwrap and the result is an error the
-            // program will panic
-            count_a = count_a + (right[n].parse::<i32>().unwrap() - left[n].parse::<i32>().unwrap());
+            count_a = count_a + (right[n] - left[n]);
         } 
     }
 
-    // why single & for west and && for east?
-    let array_syntax: usize = left
-        .iter()
-        .map(|&west| right
-            .iter()
-            .filter(|&&east| east == west)
-            .count() * west.parse::<usize>().unwrap()
-        ).sum();
+    println!("part A: {}", count_a);
+}
 
-    let mut count_b = 0;
-    for n in 0..left.len() {
-        let mut tmp = 0;
-        for j in 0..right.len() {
-            if left[n] == right[j] {
-               tmp = tmp + 1;
-            }
-        }
-        count_b = count_b + left[n].parse::<i32>().unwrap() * tmp;
+fn merge(left: &mut [i32], right: &mut [i32]) {}
+
+// Borrowing mutable ref to the vector
+fn sort(input: &[i32]) {
+    if input.len() < 2 {
+        return;
     }
 
-    println!("part A: {}", count_a);
-    println!("part B: {}", count_b);
-    println!("part B again: {}", array_syntax);
+    let midpoint = input.len() / 2;
+
+    let (mut left_slice, mut right_slice) = input.split_at(midpoint);
+
+    sort(left_slice);
+    sort(right_slice);
+
+    merge(&mut left_slice, &mut right_slice)
 }
